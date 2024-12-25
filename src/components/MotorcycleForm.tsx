@@ -3,7 +3,6 @@
 import * as React from 'react'
 
 import { fetchModels } from '@/actions/motorcycle'
-
 import {
   Select,
   SelectContent,
@@ -13,6 +12,7 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
+import { Input } from '@/components/ui/input'
 
 type Make = {
   id: string
@@ -44,10 +44,12 @@ export function MotorcycleForm({ makes }: Props) {
     setIsFetchingModel(false)
   }
 
-  const handleChange = (key: 'year' | 'modelId') => (value: string) =>
-    setMotorcycle(prev => ({ ...prev, [key]: value }))
+  const handleModelIdChange = (value: string) =>
+    setMotorcycle(prev => ({ ...prev, modelId: value }))
 
-  console.log(motorcycle)
+  const handleYearChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setMotorcycle(prev => ({ ...prev, year: e.target.value }))
+  }
 
   return (
     <div>
@@ -67,7 +69,7 @@ export function MotorcycleForm({ makes }: Props) {
         </SelectContent>
       </Select>
       <Select
-        onValueChange={handleChange('modelId')}
+        onValueChange={handleModelIdChange}
         disabled={models.length === 0}
       >
         <SelectTrigger className="w-[180px]">
@@ -84,6 +86,11 @@ export function MotorcycleForm({ makes }: Props) {
           </SelectGroup>
         </SelectContent>
       </Select>
+      <Input
+        placeholder="Year"
+        value={motorcycle.year}
+        onChange={handleYearChange}
+      />
     </div>
   )
 }
