@@ -53,7 +53,12 @@ export default async function LapTimes() {
   })
 
   return (
-    <div>
+    <div className="grid gap-y-8">
+      <h1 className="font-semibold text-xl">My Lap Times</h1>
+      <p className="text-lg">
+        Add your lap times for each track. ThrottleIQ estimates your lap time on
+        MotoGP tracks based on your performance
+      </p>
       <LapTimeForm
         countries={countries}
         userId={id}

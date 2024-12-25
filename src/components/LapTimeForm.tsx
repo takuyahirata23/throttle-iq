@@ -1,6 +1,7 @@
 'use client'
 
 import * as React from 'react'
+import { AudioWaveform, Bike, Timer } from 'lucide-react'
 
 import {
   Select,
@@ -13,6 +14,7 @@ import {
 } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import { formatTime } from '@/lib/utils'
 
 import type {
   Country,
@@ -79,8 +81,6 @@ export function LapTimeForm({
       setNewLapTimes(prev => [...prev, state.lapTime])
     }
   }, [state])
-
-  console.log(lapTimes)
 
   return (
     <div>
@@ -179,15 +179,31 @@ export function LapTimeForm({
           </Button>
         </div>
       </form>
-      <ul className="mt-8">
+      <ul className="mt-8 space-y-4">
         {lapTimes
           .concat(newLapTimes)
           .map(({ id, time, motorcycle, trackLayout }: LapTime) => (
-            <li key={id}>
-              {time}
-              {motorcycle.model.name}
-              {trackLayout.track.name}
-              {trackLayout.name}
+            <li
+              key={id}
+              className="bg-secondary p-4 rounded-md shadow space-y-2"
+            >
+              <div className="flex items-center gap-x-1">
+                <Timer />
+                <div>{formatTime(time)}</div>
+              </div>
+              <div className="flex items-center gap-x-1">
+                <Bike />
+                <div>{motorcycle.model.name}</div>
+                {trackLayout.track.name}
+                {trackLayout.name}
+              </div>
+              <div className="flex items-center gap-x-1">
+                <AudioWaveform />
+                <div>
+                  {trackLayout.track.name}
+                  {trackLayout.name}
+                </div>
+              </div>
             </li>
           ))}
       </ul>

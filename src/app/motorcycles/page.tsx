@@ -34,13 +34,12 @@ export default async function Motorcycles() {
     }
   })
 
-  console.log(motorcycles)
-
   const makes = await prisma.make.findMany({
     orderBy: {
       name: 'asc'
     }
   })
+
   return (
     <div className="grid gap-y-8">
       <h1 className="font-semibold text-xl">My Motorcycles</h1>
