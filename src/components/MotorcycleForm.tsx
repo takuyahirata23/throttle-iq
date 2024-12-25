@@ -71,17 +71,19 @@ export function MotorcycleForm({ makes, userId, motorcycles }: Props) {
 
   return (
     <div>
-      <ul className="grid gap-y-4">
-        {motorcycles
-          .concat(newMotorcycles)
-          .map(({ id, year, model }: Motorcycle) => (
-            <li key={id} className="bg-secondary p-4 rounded-md flex shadow">
-              <span className="font-motorcycle">{model.make.name} </span>
-              <span>&nbsp;- &nbsp;{model.name}</span>
-              <span className="text-sm ml-1">({year})</span>
-            </li>
-          ))}
-      </ul>
+      {motorcycles.length > 0 && (
+        <ul className="grid gap-y-4 mb-8">
+          {motorcycles
+            .concat(newMotorcycles)
+            .map(({ id, year, model }: Motorcycle) => (
+              <li key={id} className="bg-secondary p-4 rounded-md flex shadow">
+                <span className="font-motorcycle">{model.make.name} </span>
+                <span>&nbsp;- &nbsp;{model.name}</span>
+                <span className="text-sm ml-1">({year})</span>
+              </li>
+            ))}
+        </ul>
+      )}
       <form action={formAction} className="space-y-6">
         <FormItem>
           <Label>Make</Label>

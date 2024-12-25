@@ -1,7 +1,10 @@
+import Link from 'next/link'
 import prisma from '@/lib/prisma'
 import { auth } from '@/auth'
+import { Timer } from 'lucide-react'
 
 import { MotorcycleForm } from '@/components'
+import { Button } from '@/components/ui/button'
 
 export default async function Motorcycles() {
   const { user } = await auth()
@@ -47,6 +50,10 @@ export default async function Motorcycles() {
         </h2>
         <MotorcycleForm makes={makes} userId={id} motorcycles={motorcycles} />
       </div>
+      <Button variant="outline" className="w-2/3 mx-auto">
+        <Link href="/laptimes">Add lap times</Link>
+        <Timer />
+      </Button>
     </div>
   )
 }
