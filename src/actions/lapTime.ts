@@ -15,11 +15,23 @@ export async function saveLapTime(userId: string, iv: any, formData: FormData) {
   }
 
   try {
-    await prisma.lapTime.create({
-      data
+    const lapTime = await prisma.lapTime.create({
+      data,
+      include: {
+        motorcycle: {
+          include: {
+            model: true
+          }
+        },
+        trackLayout: {
+          include: {
+            track: true
+          }
+        }
+      }
     })
 
-    return { error: false }
+    return { error: false, lapTime }
   } catch (e) {
     console.error(e)
     return { error: true }

@@ -43,13 +43,32 @@ type Motorcycle = {
   model: any
 }
 
+type LapTime = {
+  id: string
+  time: number
+  motorcycle: Motorcycle
+}
+
 type Props = {
   countries: Country[]
   motorcycles: Motorcycle[]
   userId: string
+  lapTimes: LapTime[]
 }
 
-export function LapTimeForm({ countries, motorcycles, userId }: Props) {
+const iv = {
+  minutes: '',
+  seconds: '',
+  trackLayout: '',
+  motorcycleId: ''
+}
+
+export function LapTimeForm({
+  countries,
+  motorcycles,
+  userId,
+  lapTimes
+}: Props) {
   const [state, formAction, pending] = React.useActionState(
     saveLapTime.bind(null, userId),
     null
@@ -57,12 +76,8 @@ export function LapTimeForm({ countries, motorcycles, userId }: Props) {
   const [isFetching, setIsFetching] = React.useState(false)
   const [tracks, setTracks] = React.useState<Track[]>([])
   const [trackLayouts, setTrackLayouts] = React.useState<TrackLayout[]>([])
-  const [lapTime, setLapTime] = React.useState({
-    minutes: '',
-    seconds: '',
-    trackLayout: '',
-    motorcycleId: ''
-  })
+  const [newLapTimes, setNewLapTimes] = React.useState<LapTime[]>([])
+  const [lapTime, setLapTime] = React.useState(iv)
 
   const onCountryChange = async (countryId: string) => {
     setIsFetching(true)
@@ -82,7 +97,14 @@ export function LapTimeForm({ countries, motorcycles, userId }: Props) {
     (key: 'minutes' | 'seconds') => (e: React.ChangeEvent<HTMLInputElement>) =>
       setLapTime(prev => ({ ...prev, [key]: e.target.value }))
 
-  console.log(state)
+  React.useEffect(() => {
+    if (!state?.error && state?.lapTime) {
+      setLapTime(iv)
+      setNewLapTimes(prev => [...prev, state.lapTime])
+    }
+  }, [state])
+
+  console.log(lapTimes)
 
   return (
     <div>
@@ -179,6 +201,18 @@ export function LapTimeForm({ countries, motorcycles, userId }: Props) {
           Save
         </Button>
       </form>
+      <ul>
+        {lapTimes
+          .concat(newLapTimes)
+          .map(({ id, time, motorcycle, trackLayout }: LapTime) => (
+            <li key={id}>
+              {time}
+              {motorcycle.model.name}
+              {trackLayout.track.name}
+              {trackLayout.name}
+            </li>
+          ))}
+      </ul>
     </div>
   )
 }

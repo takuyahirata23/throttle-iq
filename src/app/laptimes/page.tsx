@@ -6,12 +6,33 @@ import { LapTimeForm } from '@/components'
 export default async function LapTimes() {
   const { user } = await auth()
 
-  const { id } = await prisma.user.findUnique({
+  const { id, lapTimes } = await prisma.user.findUnique({
     where: {
       email: user.email
     },
     select: {
-      id: true
+      id: true,
+      lapTimes: {
+        select: {
+          id: true,
+          time: true,
+          motorcycle: {
+            select: {
+              model: true
+            }
+          },
+          trackLayout: {
+            select: {
+              name: true,
+              track: {
+                select: {
+                  name: true
+                }
+              }
+            }
+          }
+        }
+      }
     }
   })
 
@@ -24,7 +45,14 @@ export default async function LapTimes() {
     }
   })
 
-  const countries = await prisma.country.findMany({ orderBy: { name: 'asc' } })
+  const countries = await prisma.country.findMany({
+    where: {
+      OR: [{ code: 'CA' }, { code: 'JP' }, { code: 'US' }]
+    },
+    orderBy: { name: 'asc' }
+  })
+
+  console.log(lapTimes)
 
   return (
     <div>
@@ -32,6 +60,7 @@ export default async function LapTimes() {
         countries={countries}
         userId={id}
         motorcycles={motorcycles}
+        lapTimes={lapTimes}
       />
     </div>
   )
