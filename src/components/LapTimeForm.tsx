@@ -185,23 +185,25 @@ export function LapTimeForm({
           .map(({ id, time, motorcycle, trackLayout }: LapTime) => (
             <li
               key={id}
-              className="bg-secondary p-4 rounded-md shadow space-y-2"
+              className="bg-secondary p-4 rounded-md shadow space-y-2 flex flex-col text-sm"
             >
-              <div className="flex items-center gap-x-1">
-                <Timer />
-                <div>{formatTime(time)}</div>
-              </div>
-              <div className="flex items-center gap-x-1">
-                <Bike />
-                <div>{motorcycle.model.name}</div>
-                {trackLayout.track.name}
-                {trackLayout.name}
-              </div>
-              <div className="flex items-center gap-x-1">
-                <AudioWaveform />
-                <div>
+              <div className="flex items-center gap-x-2">
+                <AudioWaveform className="w-5 h-5" />
+                <div className="font-semibold">
                   {trackLayout.track.name}
                   {trackLayout.name}
+                </div>
+              </div>
+              <div className="flex gap-x-4">
+                <div className="flex gap-x-1 items-center bg-primary px-2 py-1 rounded-md text-primary-foreground self-start">
+                  <Timer className="w-5 h-5" />
+                  <div className="text-sm">{formatTime(time)}</div>
+                </div>
+                <div className="flex items-center gap-x-2">
+                  <Bike className="w-5 h-5" />
+                  <div>
+                    {motorcycle.model.name}({motorcycle.year})
+                  </div>
                 </div>
               </div>
             </li>

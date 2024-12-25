@@ -18,6 +18,7 @@ export default async function LapTimes() {
           time: true,
           motorcycle: {
             select: {
+              year: true,
               model: true
             }
           },
