@@ -13,16 +13,37 @@ export async function fetchModels(id: string) {
   })
 }
 
-export async function saveMotorcycle(userId: string, formData: FormData) {
+export async function saveMotorcycle(
+  userId: string,
+  _: any,
+  formData: FormData
+) {
   const data = {
     userId: userId,
     modelId: formData.get('modelId') as string,
     year: Number(formData.get('year'))
   }
 
-  await prisma.motorcycle.create({
-    data
-  })
+  try {
+    const motorcycle = await prisma.motorcycle.create({
+      data,
+      include: {
+        model: {
+          include: {
+            make: true
+          }
+        }
+      }
+    })
 
-  redirect('/')
+    return {
+      error: false,
+      motorcycle
+    }
+  } catch (error) {
+    console.error(error)
+    return {
+      error: true
+    }
+  }
 }
