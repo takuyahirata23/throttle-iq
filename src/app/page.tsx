@@ -1,11 +1,13 @@
-import { auth } from '../auth'
+import Link from 'next/link'
 import { signIn } from '@/auth'
 
 export default async function Home() {
-  // const session = await auth()
-  // console.log(session)
   return (
     <div className="font-[family-name:var(--font-geist-sans)]">
+      <div className="grid gap-y-4">
+        <Link href="/motorcycles">Motorcycles</Link>
+        <Link href="/laptimes">Lap Times</Link>
+      </div>
       <form
         action={async () => {
           'use server'

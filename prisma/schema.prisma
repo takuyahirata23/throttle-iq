@@ -23,6 +23,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   motorcycles   Motorcycle[]
+  lapTimes      LapTime[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -71,8 +72,9 @@ model TrackLayout {
   name   String
   length Float
 
-  track   Track  @relation(fields: [trackId], references: [id], onDelete: Cascade)
+  track   Track     @relation(fields: [trackId], references: [id], onDelete: Cascade)
   trackId String
+  LapTime LapTime[]
 }
 
 model Make {
@@ -85,7 +87,7 @@ model Model {
   id   String @id @default(uuid())
   name String
 
-  track  Make   @relation(fields: [makeId], references: [id], onDelete: Cascade)
+  make  Make   @relation(fields: [makeId], references: [id], onDelete: Cascade)
   makeId String
 
   Motorcycle Motorcycle[]
@@ -100,6 +102,28 @@ model Motorcycle {
 
   modelId String
   model   Model  @relation(fields: [modelId], references: [id], onDelete: Cascade)
+
+  lapTimes LapTime[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model LapTime {
+  id   String @id @default(uuid())
+  time Float
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  motorcycle   Motorcycle @relation(fields: [motorcycleId], references: [id], onDelete: Cascade)
+  motorcycleId String
+
+  trackLayout   TrackLayout @relation(fields: [trackLayoutId], references: [id], onDelete: Cascade)
+  trackLayoutId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Session {
