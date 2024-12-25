@@ -3,6 +3,7 @@
 import * as React from 'react'
 
 import { fetchModels, saveMotorcycle } from '@/actions/motorcycle'
+import { useToast } from '@/hooks/use-toast'
 import {
   Select,
   SelectContent,
@@ -41,6 +42,7 @@ export function MotorcycleForm({ makes, userId, motorcycles }: Props) {
   const [models, setModels] = React.useState<Model[] | []>([])
   const [motorcycle, setMotorcycle] = React.useState(iv)
   const [newMotorcycles, setNewMotorcycles] = React.useState<Motorcycle[]>([])
+  const { toast } = useToast()
 
   const onMakeChange = async (id: string) => {
     setIsFetchingModel(true)
@@ -60,6 +62,10 @@ export function MotorcycleForm({ makes, userId, motorcycles }: Props) {
     if (!state?.error && state?.motorcycle) {
       setMotorcycle(iv)
       setNewMotorcycles(prev => [...prev, state.motorcycle])
+      toast({
+        title: 'Saved new motorcycle!',
+        description: `${state.motorcycle.model.name}`
+      })
     }
   }, [state])
 
