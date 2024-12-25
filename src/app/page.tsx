@@ -7,6 +7,7 @@ export default async function Home() {
       <div className="grid gap-y-4">
         <Link href="/motorcycles">Motorcycles</Link>
         <Link href="/laptimes">Lap Times</Link>
+        <Link href="/estimate">Estimate</Link>
       </div>
       <form
         action={async () => {

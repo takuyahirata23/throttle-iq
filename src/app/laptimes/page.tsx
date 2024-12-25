@@ -52,8 +52,6 @@ export default async function LapTimes() {
     orderBy: { name: 'asc' }
   })
 
-  console.log(lapTimes)
-
   return (
     <div>
       <LapTimeForm

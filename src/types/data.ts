@@ -1,3 +1,9 @@
+export type User = {
+  id: string
+  name: string
+  motorcycles: Motorcycle[]
+}
+
 export type Country = {
   id: string
   name: string
