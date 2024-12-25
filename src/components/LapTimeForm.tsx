@@ -14,40 +14,16 @@ import {
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 
+import type {
+  Country,
+  Track,
+  TrackLayout,
+  Motorcycle,
+  LapTime
+} from '@/types/data'
+
 import { fetchTracks, fetchTrackLayouts } from '@/actions/tracks'
 import { saveLapTime } from '@/actions/lapTime'
-
-type Country = {
-  id: string
-  name: string
-  code: string
-}
-
-type Track = {
-  id: string
-  name: string
-  isMotoGP: boolean
-  countryId: string
-}
-
-type TrackLayout = {
-  id: string
-  name: string
-  length: number
-  trackId: string
-}
-
-type Motorcycle = {
-  id: string
-  year: number
-  model: any
-}
-
-type LapTime = {
-  id: string
-  time: number
-  motorcycle: Motorcycle
-}
 
 type Props = {
   countries: Country[]
@@ -108,7 +84,7 @@ export function LapTimeForm({
 
   return (
     <div>
-      <form action={formAction}>
+      <form action={formAction} className="space-y-6">
         <Select onValueChange={onCountryChange} disabled={isFetching}>
           <SelectTrigger className="">
             <SelectValue placeholder="Select Country" />
@@ -175,7 +151,7 @@ export function LapTimeForm({
             </SelectGroup>
           </SelectContent>
         </Select>
-        <div>
+        <div className="grid grid-cols-2 gap-x-4">
           <Input
             required
             onChange={onTimeChange('minutes')}
@@ -197,11 +173,13 @@ export function LapTimeForm({
             max="59.99"
           />
         </div>
-        <Button type="submit" disabled={pending}>
-          Save
-        </Button>
+        <div className="mt-8">
+          <Button type="submit" disabled={pending} className="mt-4 w-full">
+            Save
+          </Button>
+        </div>
       </form>
-      <ul>
+      <ul className="mt-8">
         {lapTimes
           .concat(newLapTimes)
           .map(({ id, time, motorcycle, trackLayout }: LapTime) => (
