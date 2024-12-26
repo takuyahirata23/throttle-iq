@@ -1,10 +1,15 @@
+import { redirect } from 'next/navigation'
 import prisma from '@/lib/prisma'
 import { auth } from '@/auth'
 
 import { EstimateForm } from '@/components'
 
 export default async function Estimate() {
-  const { user } = await auth()
+  const session = await auth()
+
+  if (!session) {
+    return redirect('/')
+  }
 
   const { motorcycles } = await prisma.user.findUnique({
     where: {

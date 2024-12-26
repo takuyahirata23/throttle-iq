@@ -1,10 +1,16 @@
+import { redirect } from 'next/navigation'
 import prisma from '@/lib/prisma'
 import { auth } from '@/auth'
 
 import { LapTimeForm } from '@/components'
 
 export default async function LapTimes() {
-  const { user } = await auth()
+  const session = await auth()
+
+  if (!session) {
+    return redirect('/')
+  }
+  const { user } = session
 
   const { id, lapTimes } = await prisma.user.findUnique({
     where: {

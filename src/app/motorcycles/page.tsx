@@ -1,13 +1,16 @@
-import Link from 'next/link'
+import { redirect } from 'next/navigation'
 import prisma from '@/lib/prisma'
 import { auth } from '@/auth'
-import { Timer } from 'lucide-react'
 
 import { MotorcycleForm } from '@/components'
-import { Button } from '@/components/ui/button'
 
 export default async function Motorcycles() {
-  const { user } = await auth()
+  const session = await auth()
+
+  if (!session) {
+    return redirect('/')
+  }
+  const { user } = session
 
   const { id, motorcycles } = await prisma.user.findUnique({
     where: {
