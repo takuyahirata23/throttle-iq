@@ -114,7 +114,7 @@ export function EstimateForm({ trackOptions, motorcycles }: Props) {
           name="motorcycleId"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>Motorcycle</FormLabel>
               <Select
                 onValueChange={field.onChange}
                 defaultValue={field.value}
@@ -122,7 +122,7 @@ export function EstimateForm({ trackOptions, motorcycles }: Props) {
               >
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select a verified email to display" />
+                    <SelectValue placeholder="Select motorcycle to ride on the tracks" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
