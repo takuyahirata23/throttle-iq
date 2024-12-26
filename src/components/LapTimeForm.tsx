@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import { AudioWaveform, Bike, Timer } from 'lucide-react'
+import Link from 'next/link'
 
 import { useToast } from '@/hooks/use-toast'
 import {
@@ -28,7 +29,6 @@ import type {
 
 import { fetchTracks, fetchTrackLayouts } from '@/actions/tracks'
 import { saveLapTime } from '@/actions/lapTime'
-import Link from 'next/link'
 
 type Props = {
   countries: Country[]
@@ -104,7 +104,44 @@ export function LapTimeForm({
   }, [state])
 
   return (
-    <div>
+    <div className="grid gap-y-12">
+      {lapTimes.concat(newLapTimes).length > 0 && (
+        <div className="space-y-8">
+          <ul className="space-y-4">
+            {lapTimes
+              .concat(newLapTimes)
+              .map(({ id, time, motorcycle, trackLayout }: LapTime) => (
+                <li
+                  key={id}
+                  className="bg-secondary p-4 rounded-md shadow space-y-2 flex flex-col text-sm"
+                >
+                  <div className="flex items-center gap-x-2">
+                    <AudioWaveform className="w-5 h-5" />
+                    <div className="font-semibold">
+                      {trackLayout.track.name}
+                      {trackLayout.name}
+                    </div>
+                  </div>
+                  <div className="flex gap-x-4">
+                    <div className="flex gap-x-1 items-center bg-primary px-2 py-1 rounded-md text-primary-foreground self-start">
+                      <Timer className="w-5 h-5" />
+                      <div className="text-sm">{formatTime(time)}</div>
+                    </div>
+                    <div className="flex items-center gap-x-2">
+                      <Bike className="w-5 h-5" />
+                      <div>
+                        {motorcycle.model.name}({motorcycle.year})
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              ))}
+          </ul>
+          <Button type="button" asChild className="mt-4 w-full">
+            <Link href="/estimate">Ride on MotoGP Tracks!</Link>
+          </Button>
+        </div>
+      )}
       <form action={formAction} className="space-y-6">
         <Select onValueChange={onCountryChange} disabled={isFetching}>
           <SelectTrigger className="">
@@ -201,36 +238,6 @@ export function LapTimeForm({
           </Button>
         </div>
       </form>
-      <ul className="mt-8 space-y-4">
-        {lapTimes
-          .concat(newLapTimes)
-          .map(({ id, time, motorcycle, trackLayout }: LapTime) => (
-            <li
-              key={id}
-              className="bg-secondary p-4 rounded-md shadow space-y-2 flex flex-col text-sm"
-            >
-              <div className="flex items-center gap-x-2">
-                <AudioWaveform className="w-5 h-5" />
-                <div className="font-semibold">
-                  {trackLayout.track.name}
-                  {trackLayout.name}
-                </div>
-              </div>
-              <div className="flex gap-x-4">
-                <div className="flex gap-x-1 items-center bg-primary px-2 py-1 rounded-md text-primary-foreground self-start">
-                  <Timer className="w-5 h-5" />
-                  <div className="text-sm">{formatTime(time)}</div>
-                </div>
-                <div className="flex items-center gap-x-2">
-                  <Bike className="w-5 h-5" />
-                  <div>
-                    {motorcycle.model.name}({motorcycle.year})
-                  </div>
-                </div>
-              </div>
-            </li>
-          ))}
-      </ul>
     </div>
   )
 }
