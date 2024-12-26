@@ -58,6 +58,25 @@ const me = [
               }
             ]
           }
+        },
+        {
+          name: 'Pittsburgh International Race Complex',
+          trackLayouts: {
+            create: [
+              {
+                name: 'Full Course',
+                length: 4.473
+              },
+              {
+                name: 'North Course',
+                length: 2.575
+              },
+              {
+                name: 'South Course',
+                length: 1.931
+              }
+            ]
+          }
         }
       ]
     }
