@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
+import { createSession } from '@/actions/estimate'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
@@ -29,7 +30,9 @@ const FormSchema = z.object({
   tracks: z.string().array().min(2, {
     message: 'Please select least 2 tracks'
   }),
-  motorcycleId: z.string()
+  motorcycleId: z.string().min(10, {
+    message: 'Please select motorcycle'
+  })
 })
 
 type Props = {
@@ -46,16 +49,9 @@ export function EstimateForm({ trackOptions, motorcycles }: Props) {
     }
   })
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(data)
-    // toast({
-    //   title: 'You submitted the following values:',
-    //   description: (
-    //     <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-    //       <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-    //     </pre>
-    //   )
-    // })
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    const res = await createSession(data)
+    console.log(res)
   }
 
   return (
@@ -114,7 +110,7 @@ export function EstimateForm({ trackOptions, motorcycles }: Props) {
           name="motorcycleId"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Motorcycle</FormLabel>
+              <FormLabel>Motorcycle to ride</FormLabel>
               <Select
                 onValueChange={field.onChange}
                 defaultValue={field.value}
@@ -133,6 +129,7 @@ export function EstimateForm({ trackOptions, motorcycles }: Props) {
                   ))}
                 </SelectContent>
               </Select>
+              <FormMessage />
             </FormItem>
           )}
         />
