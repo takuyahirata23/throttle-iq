@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import { ToastAction } from '@/components/ui/toast'
 import { formatTime } from '@/lib/utils'
 
 import type {
@@ -27,6 +28,7 @@ import type {
 
 import { fetchTracks, fetchTrackLayouts } from '@/actions/tracks'
 import { saveLapTime } from '@/actions/lapTime'
+import Link from 'next/link'
 
 type Props = {
   countries: Country[]
@@ -84,7 +86,12 @@ export function LapTimeForm({
       setNewLapTimes(prev => [...prev, state.lapTime])
       toast({
         title: 'Saved new laptime',
-        description: 'Lets estimate your lap time on any MotoGP track!'
+        description: 'Lets estimate your lap time on any MotoGP track!',
+        action: (
+          <ToastAction altText="Got to estimate">
+            <Link href="/estimate">Estimate</Link>
+          </ToastAction>
+        )
       })
     }
 
