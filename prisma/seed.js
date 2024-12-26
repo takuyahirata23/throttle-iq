@@ -247,55 +247,63 @@ const me = [
     name: 'Japan',
     code: 'JP',
     tracks: {
-      create: {
-        name: 'Mobility Resort Motegi',
-        isMotoGP: true,
-        trackLayouts: {
-          create: {
-            name: 'Grand Prix',
-            length: 4.8
+      create: [
+        {
+          name: 'Mobility Resort Motegi',
+          isMotoGP: true,
+          trackLayouts: {
+            create: {
+              name: 'Grand Prix',
+              length: 4.8
+            }
+          }
+        },
+        {
+          name: 'Suzuka Circuit',
+          trackLayouts: {
+            create: [
+              {
+                name: 'Grand Prix',
+                length: 5.807
+              },
+              {
+                name: 'East Circuit',
+                length: 2.243
+              },
+
+              {
+                name: 'West Circuit',
+                length: 3.466
+              }
+            ]
+          }
+        },
+        {
+          name: 'Tsukuba Circuit',
+          trackLayouts: {
+            create: [
+              {
+                name: '2000 Bike Course',
+                length: 2.07
+              },
+
+              {
+                name: '1000 Course',
+                length: 1.039
+              }
+            ]
+          }
+        },
+        {
+          name: 'Sodegaura Forest Raceway',
+          trackLayouts: {
+            create: {
+              name: 'Main Course',
+              length: 2.436
+            }
           }
         }
-      },
-      create: {
-        name: 'Suzuka Circuit',
-        trackLayouts: {
-          create: {
-            name: 'Grand Prix',
-            length: 5.807
-          },
-          create: {
-            name: 'East Circuit',
-            length: 2.243
-          },
-          create: {
-            name: 'West Circuit',
-            length: 3.466
-          }
-        }
-      },
-      create: {
-        name: 'Tsukuba Circuit',
-        trackLayouts: {
-          create: {
-            name: '2000 Bike Course',
-            length: 2.07
-          },
-          create: {
-            name: '1000 Course',
-            length: 1.039
-          }
-        }
-      },
-      create: {
-        name: 'Sodegaura Forest Raceway',
-        trackLayouts: {
-          create: {
-            name: 'Main Course',
-            length: 2.436
-          }
-        }
-      }
+      ]
     }
   },
   {
