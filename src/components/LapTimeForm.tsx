@@ -178,7 +178,6 @@ export function LapTimeForm({
           </SelectContent>
         </Select>
         <Select
-          value={lapTime.trackLayout}
           disabled={isFetching || trackLayouts.length === 0}
           name="trackLayoutId"
         >
@@ -196,7 +195,7 @@ export function LapTimeForm({
             </SelectGroup>
           </SelectContent>
         </Select>
-        <Select name="motorcycleId" value={lapTime.motorcycleId}>
+        <Select name="motorcycleId">
           <SelectTrigger>
             <SelectValue placeholder="Select Motorcycle" />
           </SelectTrigger>
