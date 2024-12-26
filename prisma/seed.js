@@ -508,13 +508,13 @@ const bikes = [
     name: 'BMW',
     models: {
       create: [
-        { name: 'S 1000 RR' },
-        { name: 'S 1000 R' },
-        { name: 'S 1000 XR' },
-        { name: 'M 1000 RR' },
-        { name: 'M 1000 R' },
-        { name: 'G 310 R' },
-        { name: 'G 310 GS' }
+        { name: 'S1000RR' },
+        { name: 'S1000R' },
+        { name: 'S1000XR' },
+        { name: 'M1000RR' },
+        { name: 'M1000R' },
+        { name: 'G310R' },
+        { name: 'G310GS' }
       ]
     }
   },
@@ -523,7 +523,8 @@ const bikes = [
     models: {
       create: [
         { name: 'Panigale V4' },
-        { name: 'Panigale V4 R' },
+        { name: 'Panigale V4R' },
+        { name: 'Panigale V4S' },
         { name: 'Panigale V2' },
         { name: 'SuperSport 950' },
         { name: 'Streetfighter V4' },
