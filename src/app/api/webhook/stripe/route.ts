@@ -3,7 +3,7 @@ import Stripe from 'stripe'
 
 //import prisma from '@/lib/prisma'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
+const stripe = new Stripe(process.env.STRIPE_SECRET!)
 
 export async function POST(request: Request) {
   const body = await request.text()
