@@ -1,7 +1,11 @@
 'use server'
 import prisma from '@/lib/prisma'
 
-export async function saveLapTime(userId: string, iv: any, formData: FormData) {
+export async function saveLapTime(
+  userId: string,
+  _iv: any,
+  formData: FormData
+) {
   const minutes = formData.get('minutes')
   const seconds = formData.get('seconds')
 
