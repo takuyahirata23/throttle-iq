@@ -49,10 +49,6 @@ export default async function Motorcycles() {
         </h2>
         <MotorcycleForm makes={makes} userId={id} motorcycles={motorcycles} />
       </div>
-      <Button variant="outline" className="w-2/3 mx-auto">
-        <Link href="/laptimes">Add lap times</Link>
-        <Timer />
-      </Button>
     </div>
   )
 }

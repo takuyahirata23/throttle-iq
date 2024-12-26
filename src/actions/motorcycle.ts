@@ -41,9 +41,9 @@ export async function saveMotorcycle(
       motorcycle
     }
   } catch (error) {
-    console.error(error)
     return {
-      error: true
+      error: true,
+      payload: error
     }
   }
 }

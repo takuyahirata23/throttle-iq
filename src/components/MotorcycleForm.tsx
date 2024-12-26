@@ -1,6 +1,8 @@
 'use client'
 
 import * as React from 'react'
+import Link from 'next/link'
+import { Timer } from 'lucide-react'
 
 import { fetchModels, saveMotorcycle } from '@/actions/motorcycle'
 import { useToast } from '@/hooks/use-toast'
@@ -45,10 +47,12 @@ export function MotorcycleForm({ makes, userId, motorcycles }: Props) {
   const { toast } = useToast()
 
   const onMakeChange = async (id: string) => {
-    setIsFetchingModel(true)
-    const res = await fetchModels(id)
-    setModels(res)
-    setIsFetchingModel(false)
+    if (id) {
+      setIsFetchingModel(true)
+      const res = await fetchModels(id)
+      setModels(res)
+      setIsFetchingModel(false)
+    }
   }
 
   const handleModelIdChange = (value: string) =>
@@ -58,33 +62,55 @@ export function MotorcycleForm({ makes, userId, motorcycles }: Props) {
     setMotorcycle(prev => ({ ...prev, year: e.target.value }))
   }
 
+  const ref = React.useRef<HTMLFormElement>(null)
+
   React.useEffect(() => {
+    setMotorcycle(iv)
     if (!state?.error && state?.motorcycle) {
-      setMotorcycle(iv)
       setNewMotorcycles(prev => [...prev, state.motorcycle])
       toast({
         title: 'Saved new motorcycle!',
         description: `${state.motorcycle.model.name}`
       })
     }
+
+    if (state?.error) {
+      toast({
+        title: 'Fail',
+        description: 'Something went wrong...'
+      })
+    }
   }, [state])
 
   return (
     <div>
-      {motorcycles.length > 0 && (
-        <ul className="grid gap-y-4 mb-8">
-          {motorcycles
-            .concat(newMotorcycles)
-            .map(({ id, year, model }: Motorcycle) => (
-              <li key={id} className="bg-secondary p-4 rounded-md flex shadow">
-                <span className="font-motorcycle">{model.make.name} </span>
-                <span>&nbsp;- &nbsp;{model.name}</span>
-                <span className="text-sm ml-1">({year})</span>
-              </li>
-            ))}
-        </ul>
+      {motorcycles.concat(newMotorcycles).length > 0 && (
+        <div>
+          <ul className="grid gap-y-4 mb-8">
+            {motorcycles
+              .concat(newMotorcycles)
+              .map(({ id, year, model }: Motorcycle) => (
+                <li
+                  key={id}
+                  className="bg-secondary p-4 rounded-md flex shadow"
+                >
+                  <span className="font-motorcycle">{model.make.name} </span>
+                  <span>&nbsp;- &nbsp;{model.name}</span>
+                  <span className="text-sm ml-1">({year})</span>
+                </li>
+              ))}
+          </ul>
+          <div className="flex">
+            <Button variant="outline" className="w-2/3 mx-auto" asChild>
+              <Link href="/laptimes">
+                <Timer />
+                Add lap times
+              </Link>
+            </Button>
+          </div>
+        </div>
       )}
-      <form action={formAction} className="space-y-6">
+      <form ref={ref} action={formAction} className="space-y-6">
         <FormItem>
           <Label>Make</Label>
           <Select onValueChange={onMakeChange} disabled={isFetchingModel}>
@@ -110,6 +136,7 @@ export function MotorcycleForm({ makes, userId, motorcycles }: Props) {
             disabled={models.length === 0}
             name="modelId"
             required
+            value={motorcycle.modelId}
           >
             <SelectTrigger className="">
               <SelectValue placeholder="Select Make" />
