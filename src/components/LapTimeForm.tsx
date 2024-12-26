@@ -3,6 +3,7 @@
 import * as React from 'react'
 import { AudioWaveform, Bike, Timer } from 'lucide-react'
 
+import { useToast } from '@/hooks/use-toast'
 import {
   Select,
   SelectContent,
@@ -56,6 +57,7 @@ export function LapTimeForm({
   const [trackLayouts, setTrackLayouts] = React.useState<TrackLayout[]>([])
   const [newLapTimes, setNewLapTimes] = React.useState<LapTime[]>([])
   const [lapTime, setLapTime] = React.useState(iv)
+  const { toast } = useToast()
 
   const onCountryChange = async (countryId: string) => {
     setIsFetching(true)
@@ -76,9 +78,21 @@ export function LapTimeForm({
       setLapTime(prev => ({ ...prev, [key]: e.target.value }))
 
   React.useEffect(() => {
+    setLapTime(iv)
     if (!state?.error && state?.lapTime) {
       setLapTime(iv)
       setNewLapTimes(prev => [...prev, state.lapTime])
+      toast({
+        title: 'Saved new laptime',
+        description: 'Lets estimate your lap time on any MotoGP track!'
+      })
+    }
+
+    if (state?.error) {
+      toast({
+        title: 'Fail',
+        description: 'Something went wrong...'
+      })
     }
   }, [state])
 
@@ -119,6 +133,7 @@ export function LapTimeForm({
           </SelectContent>
         </Select>
         <Select
+          value={lapTime.trackLayout}
           disabled={isFetching || trackLayouts.length === 0}
           name="trackLayoutId"
         >
@@ -136,7 +151,7 @@ export function LapTimeForm({
             </SelectGroup>
           </SelectContent>
         </Select>
-        <Select name="motorcycleId">
+        <Select name="motorcycleId" value={lapTime.motorcycleId}>
           <SelectTrigger>
             <SelectValue placeholder="Select Motorcycle" />
           </SelectTrigger>

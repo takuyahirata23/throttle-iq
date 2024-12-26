@@ -6,16 +6,13 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function formatTime(seconds: number) {
+  // Extract minutes, seconds, and milliseconds
   const minutes = Math.floor(seconds / 60)
-  const secs = Math.floor(seconds % 60)
-  const milliseconds = Math.floor((seconds % 1) * 1000)
+  const secs = seconds % 60
 
   // Pad with leading zeros if needed
   const formattedMinutes = String(minutes).padStart(2, '0')
   const formattedSeconds = String(secs).padStart(2, '0')
-  const formattedMilliseconds = String(milliseconds)
-    .padStart(3, '0')
-    .slice(0, 2)
 
-  return `${formattedMinutes}:${formattedSeconds}.${formattedMilliseconds}`
+  return `${formattedMinutes}:${formattedSeconds}`
 }

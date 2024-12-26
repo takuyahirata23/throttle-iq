@@ -33,7 +33,6 @@ export async function saveLapTime(userId: string, iv: any, formData: FormData) {
 
     return { error: false, lapTime }
   } catch (e) {
-    console.error(e)
-    return { error: true }
+    return { error: true, payload: e }
   }
 }

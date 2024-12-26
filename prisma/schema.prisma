@@ -126,6 +126,8 @@ model LapTime {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@unique([userId, trackLayoutId, motorcycleId])
 }
 
 model Session {
