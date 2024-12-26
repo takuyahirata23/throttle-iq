@@ -1,6 +1,4 @@
 'use server'
-import { redirect } from 'next/navigation'
-import { auth } from '@/auth'
 import prisma from '@/lib/prisma'
 
 export async function fetchModels(id: string) {
@@ -19,12 +17,6 @@ export async function saveMotorcycle(
   _: any,
   formData: FormData
 ) {
-  const session = await auth()
-
-  if (!session) {
-    return redirect('/')
-  }
-
   const data = {
     userId: userId,
     modelId: formData.get('modelId') as string,
