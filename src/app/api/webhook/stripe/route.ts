@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import Stripe from 'stripe'
+import { estimate } from '@/actions/estimate'
 
 //import prisma from '@/lib/prisma'
 
@@ -27,38 +28,16 @@ export async function POST(request: Request) {
 
     console.log(lineItems)
     console.log(event.data)
-    const { id, amount_total, created, customer_details, metadata } =
-      event.data.object
-    console.log(metadata)
+    const { id, metadata } = event.data.object
+    console.log('metadata', metadata)
 
-    // const transaction = prisma.transaction.create({
-    //   data: {
-    //     transactionId: id
-    //   }
-    // })
+    const tracks = JSON.parse(metadata.tracks)
+    const { userId, motorcycleId } = metadata
 
-    // await prisma.transaction.create({
-    //   data: {
-    //     transactionId: id,
-    //     createdAt: created,
-    //     name: customer_details?.name || '',
-    //     email: customer_details?.email || '',
-    //     phone: customer_details?.phone,
-    //     photoIds: lineItems.data.map((x: any) => x.description)
-    //   }
-    // })
+    estimate({ tracks, userId, motorcycleId, stripeTransactionId: id })
 
     return NextResponse.json({
-      message: 'OK',
-      transaction: {
-        id,
-        amountTotal: amount_total,
-        createdAt: created,
-        email: customer_details?.email,
-        name: customer_details?.name,
-        phone: customer_details?.phone,
-        photoIds: lineItems.data.map((x: any) => x.description)
-      }
+      message: 'OK'
     })
   }
 

@@ -1,5 +1,6 @@
 'use client'
 
+import { redirect } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -51,9 +52,10 @@ export function EstimateForm({ trackOptions, motorcycles, userId }: Props) {
   })
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    //await createSession({ ...data, userId })
-    const res = await estimate({ ...data, userId })
-    console.log(res)
+    await createSession({ ...data, userId })
+    // const res = await estimate({ ...data, userId })
+    // console.log(res)
+    // redirect('/estimate/result')
   }
 
   return (

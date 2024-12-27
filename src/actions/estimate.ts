@@ -15,6 +15,7 @@ type Payload = {
   tracks: string[]
   motorcycleId: string
   userId: string
+  stripeTransactionId: string
 }
 
 export async function createSession({ tracks, motorcycleId, userId }: Payload) {
@@ -31,14 +32,19 @@ export async function createSession({ tracks, motorcycleId, userId }: Payload) {
       userId
     },
     mode: 'payment',
-    success_url: 'http://localhost:3000',
-    cancel_url: 'http://localhost:3000/estimate'
+    success_url: `${process.env.DOMAIN_URL}/estimate/result`,
+    cancel_url: `${process.env.DOMAIN_URL}/estimate`
   })
 
   redirect(session.url!)
 }
 
-export async function estimate({ tracks, motorcycleId, userId }: Payload) {
+export async function estimate({
+  tracks,
+  motorcycleId,
+  userId,
+  stripeTransactionId
+}: Payload) {
   const data = await fetchUserData({ tracks, motorcycleId })
   const prompt = await createPrompt(data)
 
@@ -49,7 +55,7 @@ export async function estimate({ tracks, motorcycleId, userId }: Payload) {
   const transaction = await prisma.transaction.create({
     data: {
       userId,
-      stripeTransactionId: 'stripeid',
+      stripeTransactionId,
       bike,
       estimates: {
         create: estimates
@@ -136,9 +142,9 @@ function insertPerformance(motorcycle: Motorcycle) {
 }
 
 const basePrompt =
-  'I want to generate detailed lap time estimations for users based on their motorcycle performance and tracks they want analyzed. Each response should provide realistic estimations and explanations to justify them. Here are the details:\n#### User Data:'
+  'Generate detailed lap time estimations for the tracks I want analyzed based on my performance as a less-experienced trackday rider. Each response should be realistic and justify the lap time by comparing it to my existing times on similar tracks, while considering my bike’s performance and the track’s features. Use the following format::\n#### User Data:'
 
-const requirementsPrompt = `\n####Requirements:\n1. Provide a realistic lap time range for each requested track based on the user's performance data and the track's characteristics.\n2. Explain the estimation in detail, highlighting specific track features (e.g., elevation changes, straights, technical sections) and how they relate to the user's past performance.\n3. Format the response as JSON with this structure:\n {"bike": "string", "estimates": [{"track": "string", "lapTime": "string", "explanation": "string"}]}`
+const requirementsPrompt = `\n####Requirements:\n1. Provide a realistic lap time range for each requested track based on the my performance data and the track's characteristics.\n2. Keep estimations realistic, avoiding professional-level expectations.\n3. Explain the estimation in detail, highlighting specific track features (e.g., elevation changes, straights, technical sections) and how they relate to the my past performance.\n3. Format the response as JSON with this structure:\n {"bike": "string", "estimates": [{"track": "string", "lapTime": "string", "explanation": "string"}]}`
 
 export async function createPrompt({
   tracks,

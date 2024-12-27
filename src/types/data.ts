@@ -49,3 +49,19 @@ export type LapTime = {
   motorcycle: Motorcycle
   trackLayout: TrackLayout
 }
+
+export type Estimate = {
+  id: string
+  transactionId: string
+  track: string
+  explanation: string
+  lapTime: string
+}
+
+export type Transaction = {
+  id: string
+  userId: string
+  stripeTransactionId: string
+  bike: string
+  estimates: Estimate[]
+}
