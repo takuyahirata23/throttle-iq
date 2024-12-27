@@ -1,6 +1,4 @@
-import { Bike, BookOpen, Calculator, Timer } from 'lucide-react'
-import Link from 'next/link'
-import { auth, signIn } from '@/auth'
+import { auth, signIn, signOut } from '@/auth'
 import { Button } from '@/components/ui/button'
 
 export default async function Home() {
@@ -25,35 +23,23 @@ export default async function Home() {
               await signIn('github')
             }}
           >
-            <button type="submit">Signin with Google</button>
+            <Button type="submit" className="w-full" variant="secondary">
+              Signin with Google
+            </Button>
           </form>
         ) : (
-          <div className="grid gap-y-4">
-            <Button asChild>
-              <Link href="/motorcycles">
-                <Bike />
-                Motorcycles
-              </Link>
-            </Button>
-            <Button asChild>
-              <Link href="/laptimes">
-                <Timer />
-                Lap Times
-              </Link>
-            </Button>
-            <Button asChild>
-              <Link href="/estimate">
-                <Calculator />
-                Estimate
-              </Link>
-            </Button>
-            <Button asChild>
-              <Link href="/estimate/result">
-                <BookOpen />
-                Your estimations
-              </Link>
-            </Button>
-          </div>
+          <form
+            action={async () => {
+              'use server'
+              await signOut()
+            }}
+          >
+            <div className="flex justify-center">
+              <Button type="submit" variant="link" className="text-center">
+                Sign out
+              </Button>
+            </div>
+          </form>
         )}
       </div>
     </div>
