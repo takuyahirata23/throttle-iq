@@ -6,10 +6,10 @@ import { supabase } from '@/lib/supabase'
 import type { Transaction } from '@/types/data'
 type Props = {
   transactions: Transaction[]
-  userId
+  userId: string
 }
 export function Transactions({ transactions, userId }: Props) {
-  const [allTransactions, setAllTransactions] = React.useState(transactions)
+  const [allTransactions] = React.useState(transactions)
 
   React.useEffect(() => {
     const channel = supabase
