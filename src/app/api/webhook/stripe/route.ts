@@ -27,7 +27,13 @@ export async function POST(request: Request) {
       const tracks = JSON.parse(metadata.tracks)
       const { userId, motorcycleId } = metadata
 
-      estimate({ tracks, userId, motorcycleId, stripeTransactionId: id })
+      const estimateRes = await estimate({
+        tracks,
+        userId,
+        motorcycleId,
+        stripeTransactionId: id
+      })
+      console.log('Estimate Res on route', estimateRes)
 
       return NextResponse.json({
         message: 'OK'

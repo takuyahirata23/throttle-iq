@@ -59,6 +59,7 @@ export async function estimate({
   const prompt = await createPrompt(data)
 
   const res = await request(prompt)
+  console.log('result from openai', res)
 
   const { bike, estimates } = JSON.parse(res.choices[0].message.content)
 
@@ -72,6 +73,8 @@ export async function estimate({
       }
     }
   })
+
+  console.log('transaction', transaction)
 
   return transaction
 }
