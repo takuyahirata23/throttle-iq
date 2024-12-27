@@ -20,7 +20,7 @@ export default async function Home() {
           <form
             action={async () => {
               'use server'
-              await signIn('github')
+              await signIn('google')
             }}
           >
             <Button type="submit" className="w-full" variant="secondary">
