@@ -25,6 +25,33 @@ model User {
   motorcycles   Motorcycle[]
   lapTimes      LapTime[]
 
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  Transaction Transaction[]
+}
+
+model Transaction {
+  id                  String     @id @default(uuid())
+  userId              String
+  stripeTransactionId String
+  bike                String
+  estimates           Estimate[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Estimate {
+  id            String @id @default(uuid())
+  transactionId String
+  track         String
+  lapTime       String
+  explanation   String
+
+  user Transaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -87,7 +114,7 @@ model Model {
   id   String @id @default(uuid())
   name String
 
-  make  Make   @relation(fields: [makeId], references: [id], onDelete: Cascade)
+  make   Make   @relation(fields: [makeId], references: [id], onDelete: Cascade)
   makeId String
 
   Motorcycle Motorcycle[]
