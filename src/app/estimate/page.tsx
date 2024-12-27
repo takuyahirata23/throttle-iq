@@ -1,5 +1,8 @@
 //@ts-nocheck
 import { redirect } from 'next/navigation'
+import Link from 'next/link'
+import { BookOpen } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 import prisma from '@/lib/prisma'
 import { auth } from '@/auth'
 
@@ -47,12 +50,18 @@ export default async function Estimate() {
   }))
 
   return (
-    <div>
+    <div className="grid gap-y-8">
       <EstimateForm
         motorcycles={motorcycles}
         trackOptions={trackOptions}
         userId={id}
       />
+      <Button asChild>
+        <Link href="/estimate/result">
+          <BookOpen />
+          Your estimations
+        </Link>
+      </Button>
     </div>
   )
 }
