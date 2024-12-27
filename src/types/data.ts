@@ -64,4 +64,5 @@ export type Transaction = {
   stripeTransactionId: string
   bike: string
   estimates: Estimate[]
+  status: 'PENDING' | 'ERROR' | 'COMPLETED'
 }

@@ -10,8 +10,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {
@@ -25,16 +26,23 @@ model User {
   motorcycles   Motorcycle[]
   lapTimes      LapTime[]
 
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
   transactions Transaction[]
+}
+
+enum Status {
+  PENDING
+  COMPLETED
+  ERROR
 }
 
 model Transaction {
   id                  String     @id @default(uuid())
   userId              String
   stripeTransactionId String
-  bike                String
+  status              Status     @default(PENDING)
+  bike                String?
   estimates           Estimate[]
 
   createdAt DateTime @default(now())

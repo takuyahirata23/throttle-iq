@@ -55,28 +55,57 @@ export async function estimate({
   userId,
   stripeTransactionId
 }: Payload) {
-  const data = await fetchUserData({ tracks, motorcycleId })
-  const prompt = await createPrompt(data)
-
-  const res = await request(prompt)
-  console.log('result from openai', res)
-
-  const { bike, estimates } = JSON.parse(res.choices[0].message.content)
-
-  const transaction = await prisma.transaction.create({
+  const pendingTransaction = await prisma.transaction.create({
     data: {
       userId,
       stripeTransactionId,
-      bike,
-      estimates: {
-        create: estimates
-      }
+      status: 'PENDING'
     }
   })
+  console.log('Pending transaction created', pendingTransaction)
 
-  console.log('transaction', transaction)
+  const data = await fetchUserData({ tracks, motorcycleId })
+  const prompt = await createPrompt(data)
 
-  return transaction
+  try {
+    const res = await request(prompt)
+    console.log('result from openai', res)
+
+    const { bike, estimates } = JSON.parse(res.choices[0].message.content)
+
+    const transaction = await prisma.transaction.update({
+      where: {
+        id: pendingTransaction.id
+      },
+      data: {
+        bike,
+        status: 'COMPLETED',
+        estimates: {
+          create: estimates
+        }
+      }
+    })
+
+    console.log('transaction', transaction)
+
+    return transaction
+  } catch (e) {
+    console.log(e)
+    const errorTransaction = await prisma.transaction.update({
+      where: {
+        id: pendingTransaction.id
+      },
+      data: {
+        bike,
+        status: 'ERROR',
+        estimates: {
+          create: estimates
+        }
+      }
+    })
+
+    return errorTransaction
+  }
 }
 
 export async function fetchUserData({ tracks, motorcycleId }) {
