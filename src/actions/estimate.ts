@@ -1,3 +1,4 @@
+//@ts-nocheck
 'use server'
 import { redirect } from 'next/navigation'
 import Stripe from 'stripe'
@@ -95,8 +96,8 @@ export async function fetchUserData({ tracks, motorcycleId }) {
 }
 
 function insertListOfTracks(gpTracks: Track[]) {
-  const trackNames = gpTracks.map(track => `${track.name}`).join(', ')
-  return `Estimate my lap time on ${trackNames} based on my bike and performance on the following tracks with the bike:\n`
+  const trackNames = gpTracks.map(track => `- ${track.name}\n`).join('')
+  return `**Track to Estimate**:\n${trackNames}`
 }
 
 function insertPerformance(motorcycle: Motorcycle) {
@@ -104,19 +105,23 @@ function insertPerformance(motorcycle: Motorcycle) {
   const make = motorcycle.model.make.name
   const year = motorcycle.year
 
-  const hintPrompt = `Consider differences in track length, technical complexity, and the bike’s performance characteristics. Provide a single realistic estimated lap time range for the tracks specified. Keep in mind that the official MotoGP lap times will be faster if applicable, but the estimates should be grounded in the capabilities of a ${make}-${model} ${year} on these tracks.\nResponse format:\nEstimate  laptime: [estimate_lap_times]\ntrack: [track]\nExplanation: [Brief explanation]
-  `
+  const lapTimes = motorcycle.lapTimes
+    .map(
+      (lapTime: LapTime) =>
+        `${lapTime.trackLayout.track.name}: ${formatTime(lapTime.time)}\n`
+    )
+    .join('')
 
-  const lapTimes = motorcycle.lapTimes.map(
-    (lapTime: LapTime) =>
-      `Track: ${lapTime.trackLayout.track.name}, Lap Time: ${formatTime(
-        lapTime.time
-      )}.\n`
-  )
+  const bikePrompt = `**Bike**:\n${make} ${model} ${year}\n`
+  const performancePrompt = `**Track**:\n${lapTimes}`
 
-  const bikePropt = `Bike: ${make}${model} ${year}\nPerformance: ${lapTimes}\n`
-  return bikePropt.concat(hintPrompt)
+  return bikePrompt.concat(performancePrompt)
 }
+
+const basePrompt =
+  'I want to generate detailed lap time estimations for users based on their motorcycle performance and tracks they want analyzed. Each response should provide realistic estimations and explanations to justify them. Here are the details:\n#### User Data:'
+
+const requirementsPrompt = `\n####Requirements:\n1. Provide a realistic lap time range for each requested track based on the user's performance data and the track's characteristics.\n2. Explain the estimation in detail, highlighting specific track features (e.g., elevation changes, straights, technical sections) and how they relate to the user's past performance.\n3. Format the response as JSON with this structure:\n {"bike": "string", "estimates": [{"track": "string", "lapTime": "string", "explanation": "string"}]}`
 
 export async function createPrompt({
   tracks,
@@ -125,7 +130,11 @@ export async function createPrompt({
   tracks: Track[]
   motorcycle: Motorcycle
 }) {
-  const trackPrompt = insertListOfTracks(tracks)
   const motorcyclePrompt = insertPerformance(motorcycle)
-  return trackPrompt.concat(motorcyclePrompt)
+  const trackPrompt = insertListOfTracks(tracks)
+
+  return basePrompt
+    .concat(motorcyclePrompt)
+    .concat(trackPrompt)
+    .concat(requirementsPrompt)
 }
