@@ -27,7 +27,9 @@ export async function POST(request: Request) {
 
     console.log(lineItems)
     console.log(event.data)
-    const { id, amount_total, created, customer_details } = event.data.object
+    const { id, amount_total, created, customer_details, metadata } =
+      event.data.object
+    console.log(metadata)
 
     // const transaction = prisma.transaction.create({
     //   data: {

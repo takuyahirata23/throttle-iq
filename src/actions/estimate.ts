@@ -16,7 +16,7 @@ type Payload = {
   userId: string
 }
 
-export async function createSession({ tracks, motorcycleId }: Payload) {
+export async function createSession({ tracks, motorcycleId, userId }: Payload) {
   const session = await stripe.checkout.sessions.create({
     line_items: [
       {
@@ -26,7 +26,8 @@ export async function createSession({ tracks, motorcycleId }: Payload) {
     ],
     metadata: {
       tracks: JSON.stringify(tracks),
-      motorcycleId
+      motorcycleId,
+      userId
     },
     mode: 'payment',
     success_url: 'http://localhost:3000',
