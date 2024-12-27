@@ -226,7 +226,7 @@ export function LapTimeForm({
             value={lapTime.seconds}
             name="seconds"
             type="number"
-            placeholder="ss:ms"
+            placeholder="ss.ms"
             step="0.01"
             min="0"
             max="59.99"
