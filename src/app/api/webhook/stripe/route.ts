@@ -2,8 +2,6 @@ import { NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { estimate } from '@/actions/estimate'
 
-//import prisma from '@/lib/prisma'
-
 const stripe = new Stripe(process.env.STRIPE_SECRET!)
 
 export async function POST(request: Request) {

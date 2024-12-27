@@ -18,7 +18,17 @@ type Payload = {
   stripeTransactionId: string
 }
 
-export async function createSession({ tracks, motorcycleId, userId }: Payload) {
+type SessionPayload = {
+  tracks: string[]
+  motorcycleId: string
+  userId: string
+}
+
+export async function createSession({
+  tracks,
+  motorcycleId,
+  userId
+}: SessionPayload) {
   const session = await stripe.checkout.sessions.create({
     line_items: [
       {
