@@ -33,12 +33,14 @@ export type Make = {
 export type Model = {
   id: string
   name: string
+  make: Make
 }
 
 export type Motorcycle = {
   id: string
   year: number
   model: Model
+  lapTimes: LapTime[]
 }
 
 export type LapTime = {

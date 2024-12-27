@@ -12,7 +12,7 @@ export default async function Estimate() {
     return redirect('/')
   }
 
-  const { motorcycles } = await prisma.user.findUnique({
+  const { motorcycles, id } = await prisma.user.findUnique({
     where: {
       email: session.user.email
     },
@@ -48,7 +48,11 @@ export default async function Estimate() {
 
   return (
     <div>
-      <EstimateForm motorcycles={motorcycles} trackOptions={trackOptions} />
+      <EstimateForm
+        motorcycles={motorcycles}
+        trackOptions={trackOptions}
+        userId={id}
+      />
     </div>
   )
 }
