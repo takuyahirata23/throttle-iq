@@ -2,6 +2,8 @@
 import React from 'react'
 
 import { supabase } from '@/lib/supabase'
+import prisma from '@/lib/prisma'
+import { fetchTransaction } from '@/actions/estimate'
 
 import type { Transaction } from '@/types/data'
 type Props = {
@@ -9,7 +11,7 @@ type Props = {
   userId: string
 }
 export function Transactions({ transactions, userId }: Props) {
-  const [allTransactions] = React.useState(transactions)
+  const [allTransactions, setAllTransactions] = React.useState(transactions)
 
   React.useEffect(() => {
     const channel = supabase
@@ -22,12 +24,23 @@ export function Transactions({ transactions, userId }: Props) {
           table: 'Transaction',
           filter: `userId=eq.${userId}`
         },
-        payload => {
+        async payload => {
           if (
             payload.eventType === 'INSERT' ||
             payload.eventType === 'UPDATE'
           ) {
-            console.log(payload)
+            const newTransaction = await fetchTransaction(payload.new.id)
+            console.log(newTransaction)
+
+            if (newTransaction) {
+              setAllTransactions((prev: any) => {
+                return prev.map((transaction: Transaction) =>
+                  transaction.id === newTransaction?.id
+                    ? newTransaction
+                    : transaction
+                )
+              })
+            }
           }
         }
       )

@@ -17,6 +17,9 @@ export default async function Result() {
     },
     include: {
       transactions: {
+        orderBy: {
+          createdAt: 'desc'
+        },
         include: {
           estimates: true
         }

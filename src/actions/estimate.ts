@@ -24,6 +24,18 @@ type SessionPayload = {
   userId: string
 }
 
+export async function fetchTransaction(id) {
+  const newTransaction = await prisma.transaction.findUnique({
+    where: {
+      id
+    },
+    include: {
+      estimates: true
+    }
+  })
+  return newTransaction
+}
+
 export async function createSession({
   tracks,
   motorcycleId,
