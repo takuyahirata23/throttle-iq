@@ -3,6 +3,7 @@
 import { redirect } from 'next/navigation'
 import Stripe from 'stripe'
 import prisma from '@/lib/prisma'
+import { request } from '@/lib/openai'
 
 import { formatTime } from '@/lib/utils'
 
@@ -38,11 +39,25 @@ export async function createSession({ tracks, motorcycleId, userId }: Payload) {
 }
 
 export async function estimate({ tracks, motorcycleId, userId }: Payload) {
-  console.log(userId)
   const data = await fetchUserData({ tracks, motorcycleId })
   const prompt = await createPrompt(data)
 
-  return prompt
+  const res = await request(prompt)
+
+  const { bike, estimates } = JSON.parse(res.choices[0].message.content)
+
+  const transaction = await prisma.transaction.create({
+    data: {
+      userId,
+      stripeTransactionId: 'stripeid',
+      bike,
+      estimates: {
+        create: estimates
+      }
+    }
+  })
+
+  return transaction
 }
 
 export async function fetchUserData({ tracks, motorcycleId }) {

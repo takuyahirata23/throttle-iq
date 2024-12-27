@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import { createSession } from '@/actions/estimate'
+import { createSession, estimate } from '@/actions/estimate'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
@@ -51,7 +51,9 @@ export function EstimateForm({ trackOptions, motorcycles, userId }: Props) {
   })
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    await createSession({ ...data, userId })
+    //await createSession({ ...data, userId })
+    const res = await estimate({ ...data, userId })
+    console.log(res)
   }
 
   return (

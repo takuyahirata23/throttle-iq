@@ -7,7 +7,8 @@ const client = new OpenAI({
 export async function request(prompt: string) {
   const chatCompletion = await client.chat.completions.create({
     messages: [{ role: 'user', content: prompt }],
-    model: 'gpt-4o'
+    model: 'gpt-4o-mini',
+    response_format: { type: 'json_object' }
   })
 
   return chatCompletion
