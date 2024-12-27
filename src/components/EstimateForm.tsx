@@ -56,9 +56,8 @@ export function EstimateForm({ trackOptions, motorcycles, userId }: Props) {
   })
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    //const res = await createSession({ ...data, userId })
-    const res = await estimate({ ...data, userId })
-    console.log(res)
+    const res = await createSession({ ...data, userId })
+    console.log('Result createSession', res)
   }
 
   return (

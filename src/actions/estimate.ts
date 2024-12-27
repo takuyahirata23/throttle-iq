@@ -37,6 +37,7 @@ export async function createSession({ tracks, motorcycleId }: Payload) {
 }
 
 export async function estimate({ tracks, motorcycleId, userId }: Payload) {
+  console.log(userId)
   const data = await fetchUserData({ tracks, motorcycleId })
   const prompt = await createPrompt(data)
 
