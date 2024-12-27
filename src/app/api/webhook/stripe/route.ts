@@ -17,27 +17,24 @@ export async function POST(request: Request) {
     return NextResponse.json({ message: 'Webhook error', error: e })
   }
 
-  const eventType = event.type
+  try {
+    const eventType = event.type
 
-  if (eventType === 'checkout.session.completed') {
-    const lineItems = await stripe.checkout.sessions.listLineItems(
-      event.data.object.id
-    )
+    if (eventType === 'checkout.session.completed') {
+      const { id, metadata } = event.data.object
+      console.log('metadata', metadata)
 
-    console.log(lineItems)
-    console.log(event.data)
-    const { id, metadata } = event.data.object
-    console.log('metadata', metadata)
+      const tracks = JSON.parse(metadata.tracks)
+      const { userId, motorcycleId } = metadata
 
-    const tracks = JSON.parse(metadata.tracks)
-    const { userId, motorcycleId } = metadata
+      estimate({ tracks, userId, motorcycleId, stripeTransactionId: id })
 
-    estimate({ tracks, userId, motorcycleId, stripeTransactionId: id })
-
-    return NextResponse.json({
-      message: 'OK'
-    })
+      return NextResponse.json({
+        message: 'OK'
+      })
+    }
+  } catch (e) {
+    console.log(e)
+    return new Response('', { status: 500 })
   }
-
-  return new Response('', { status: 200 })
 }
