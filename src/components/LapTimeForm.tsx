@@ -119,7 +119,7 @@ export function LapTimeForm({
                   <div className="flex items-center gap-x-2">
                     <AudioWaveform className="w-5 h-5" />
                     <div className="font-semibold">
-                      {trackLayout.track.name}
+                      {trackLayout.track.name}&nbsp;
                       {trackLayout.name}
                     </div>
                   </div>
