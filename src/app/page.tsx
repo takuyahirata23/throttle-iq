@@ -1,6 +1,6 @@
 import { auth, signIn, signOut } from '@/auth'
 import { Button } from '@/components/ui/button'
-import { AlertCircle } from 'lucide-react'
+import { AlertCircle, Facebook } from 'lucide-react'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 
 export default async function Home() {
@@ -57,6 +57,17 @@ export default async function Home() {
             ride!
           </AlertDescription>
         </Alert>
+      </div>
+      <div className="mt-10 flex justify-center">
+        <Button asChild>
+          <a
+            href="https://www.facebook.com/sharer/sharer.php?u=https://throttle-iq.vercel.app/"
+            target="_blank"
+          >
+            <Facebook />
+            Share
+          </a>
+        </Button>
       </div>
     </div>
   )

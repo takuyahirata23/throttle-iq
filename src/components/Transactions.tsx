@@ -63,6 +63,7 @@ export function Transactions({ transactions, userId }: Props) {
             target="_blank"
           >
             <Facebook />
+            Share
           </a>
         </Button>
       </div>
