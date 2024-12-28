@@ -196,9 +196,9 @@ function insertPerformance(motorcycle: Motorcycle) {
 }
 
 const basePrompt =
-  'Generate realistic lap time estimations for the tracks I want analyzed based on my performance as a less-experienced trackday rider. Focus on practical and achievable lap times by comparing my performance on similar tracks, taking into account the Yamaha YZF-R1 2023’s characteristics and each track’s specific features. Ensure the response avoids professional-level expectations or overly optimistic times. Use the following format:\n#### User Data:'
+  "Generate realistic lap time estimations for the tracks I want analyzed based on my performance as trackday rider. Focus on practical and achievable lap times by comparing my performance on similar tracks, taking into account my bike's characteristics and each track’s specific features. Ensure the response avoids professional-level expectations or overly optimistic times. Use the following format:\n#### User Data:"
 
-const requirementsPrompt = `\n####Requirements:\n1. Provide realistic lap time ranges for the requested tracks based on my current performance, emphasizing my skill level as a less-experienced rider.\n2. Consider track characteristics (e.g., elevation changes, corner types, technical sections, straights) and how they compare to tracks I’ve ridden.\n3. Justify the estimations in detail, clearly explaining why each range is achievable for someone of my skill level.\n4. Avoid suggesting professional-level lap times.\n5. Format the response as JSON with this structure:\n {"bike": "string", "estimates": [{"track": "string", "lapTime": "string", "explanation": "string"}]}`
+const requirementsPrompt = `\n####Requirements:\n1. Provide realistic lap time ranges for the requested tracks based on my current performance.\n2. Consider track characteristics (e.g., elevation changes, corner types, technical sections, straights) and how they compare to tracks I’ve ridden.\n3. Justify the estimations in detail, clearly explaining why each range is achievable for someone of my skill level.\n4. Avoid suggesting professional-level lap times.\n5. Format the response as JSON with this structure:\n {"bike": "string", "estimates": [{"track": "string", "lapTime": "string", "explanation": "string"}]}`
 
 export async function createPrompt({
   tracks,
