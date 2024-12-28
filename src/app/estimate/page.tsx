@@ -15,12 +15,17 @@ export default async function Estimate() {
     return redirect('/')
   }
 
-  const { motorcycles, id } = await prisma.user.findUnique({
+  const { motorcycles, id, lapTimes } = await prisma.user.findUnique({
     where: {
       email: session.user.email
     },
     select: {
       id: true,
+      lapTimes: {
+        select: {
+          id: true
+        }
+      },
       motorcycles: {
         select: {
           id: true,
@@ -34,6 +39,14 @@ export default async function Estimate() {
       }
     }
   })
+
+  if (motorcycles.length === 0) {
+    return redirect('/motorcycles')
+  }
+
+  if (lapTimes.length === 0) {
+    return redirect('/laptimes')
+  }
 
   const motoGPTracks = await prisma.track.findMany({
     where: {
