@@ -18,10 +18,13 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: 'ThrottleIQ',
   description: 'Personalized Calculations Based on Your Bike and Performance',
+  robots: { index: true, follow: true },
   openGraph: {
     title: 'ThrottleIQ',
+    siteName: 'ThrottleIQ',
+    url: 'https://throttle-iq.vercel.app/',
     description: 'Personalized Calculations Based on Your Bike and Performance',
-    images: ['/og.png']
+    images: [{ url: 'https://throttle-iq.vercel.app/og.png' }]
   }
 }
 
