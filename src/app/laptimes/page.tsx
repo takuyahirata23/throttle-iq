@@ -55,7 +55,7 @@ export default async function LapTimes() {
 
   const countries = await prisma.country.findMany({
     where: {
-      OR: [{ code: 'CA' }, { code: 'JP' }, { code: 'US' }]
+      OR: [{ code: 'CA' }, { code: 'JP' }, { code: 'US' }, { code: 'ES' }]
     },
     orderBy: { name: 'asc' }
   })
