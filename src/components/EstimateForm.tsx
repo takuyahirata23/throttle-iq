@@ -137,6 +137,7 @@ export function EstimateForm({ trackOptions, motorcycles, userId }: Props) {
           Submit
         </Button>
       </form>
+      <div className="text-center text-sm">$0.50/per track</div>
     </Form>
   )
 }
