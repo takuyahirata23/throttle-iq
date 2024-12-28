@@ -17,7 +17,12 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: 'ThrottleIQ',
-  description: 'Personalized Calculations Based on Your Bike and Performance'
+  description: 'Personalized Calculations Based on Your Bike and Performance',
+  openGraph: {
+    title: 'ThrottleIQ',
+    description: 'Personalized Calculations Based on Your Bike and Performance',
+    images: ['/og.png']
+  }
 }
 
 export default function RootLayout({
