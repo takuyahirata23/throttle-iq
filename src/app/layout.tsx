@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import { Header } from '@/components'
 import { Toaster } from '@/components/ui/toaster'
 import './globals.css'
-import Head from 'next/head'
+import PlausibleProvider from 'next-plausible'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -16,16 +16,16 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'ThrottleIQ',
-  description: 'Personalized Calculations Based on Your Bike and Performance',
-  robots: { index: true, follow: true },
   openGraph: {
     title: 'ThrottleIQ',
     siteName: 'ThrottleIQ',
     url: 'https://throttle-iq.vercel.app/',
     description: 'Personalized Calculations Based on Your Bike and Performance',
     images: [{ url: 'https://throttle-iq.vercel.app/og.png' }]
-  }
+  },
+  title: 'ThrottleIQ',
+  description: 'Personalized Calculations Based on Your Bike and Performance',
+  robots: { index: true, follow: true }
 }
 
 export default function RootLayout({
@@ -35,20 +35,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Head>
-        <script
-          defer
-          data-domain="throttle-iq.vercel.app"
-          src="https://plausible.io/js/script.js"
-        ></script>
-      </Head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <Header />
-        <div className="mx-auto max-w-6xl w-11/12 py-6">{children}</div>
-        <Toaster />
-      </body>
+      <PlausibleProvider domain="throttle-iq.vercel.app/">
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        >
+          <Header />
+          <div className="mx-auto max-w-6xl w-11/12 py-6">{children}</div>
+          <Toaster />
+        </body>
+      </PlausibleProvider>
     </html>
   )
 }
